@@ -1,6 +1,10 @@
-import { EmployeeService } from './../employee.service';
+import { EmployeeService } from '../../services/employee/employee.service';
 import {Component, OnInit } from '@angular/core';
-import { CreateEmp, Employee, UpdateEmp } from '../employee';
+import {
+  CreateEmp,
+  Employee,
+  UpdateEmp,
+} from './../../models/employee/employee';
 import 'datatables.net';
 import 'datatables.net-bs4';
 import { ToastrService } from 'ngx-toastr';

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { Login } from './login';
+import { Login } from './../../models/login/login';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,7 @@ export class LoginService {
         map((user) => {
           if (user) {
             this.currentUser = user.username;
-            sessionStorage['currentUser'] = JSON.stringify(user);
+            localStorage['currentUser'] = JSON.stringify(user);
           }
           return null;
         })

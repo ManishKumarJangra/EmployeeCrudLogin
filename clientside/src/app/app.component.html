@@ -13,16 +13,17 @@
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="employee">Employee</a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link text-white" routerLink="student">Student</a>
+    </li>
   </ul>
-  <!-- <form class="form-inline my-2 my-lg-0"> -->
-  <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"> -->
-  <a *ngIf="this.loginService.currentUser==''" class="btn btn-outline-success my-2 my-sm-0"
+  <a *ngIf="this.loginService.currentUser==''" class="btn btn-success my-2 my-sm-0"
     routerLink="login">Login</a>
-  <a *ngIf="this.loginService.currentUser!=''" class="btn btn-outline-success my-2 my-sm-0"
+  <a *ngIf="this.loginService.currentUser!=''" class="btn btn-danger my-2 my-sm-0"
     (click)="logoutClick()">Logout</a>
-  <!-- </form> -->
 </div>
 </nav>
+
 <div>
   <router-outlet></router-outlet>
 </div>

@@ -2261,11 +2261,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Training\\Employee CRUD + Login (16 Apr)\\EmpCrudAPI\\EmpCrudAPI\\EmpCrudAPI.csproj",
+      "projectUniqueName": "E:\\REPOS\\EmployeeCrudLogin\\EmpCrudAPI\\EmpCrudAPI\\EmpCrudAPI.csproj",
       "projectName": "EmpCrudAPI",
-      "projectPath": "E:\\Training\\Employee CRUD + Login (16 Apr)\\EmpCrudAPI\\EmpCrudAPI\\EmpCrudAPI.csproj",
+      "projectPath": "E:\\REPOS\\EmployeeCrudLogin\\EmpCrudAPI\\EmpCrudAPI\\EmpCrudAPI.csproj",
       "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-      "outputPath": "E:\\Training\\Employee CRUD + Login (16 Apr)\\EmpCrudAPI\\EmpCrudAPI\\obj\\",
+      "outputPath": "E:\\REPOS\\EmployeeCrudLogin\\EmpCrudAPI\\EmpCrudAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "D:\\Program Files\\Microsoft Visual Studio\\Shared\\NuGetPackages"
