@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CreateEmp, UpdateEmp } from './../../models/employee/employee';
+import { Employee } from './../../models/employee/employee';
 
 @Injectable({
   providedIn: 'root',
@@ -13,14 +13,14 @@ export class EmployeeService {
     return this.httpClient.get<any>('https://localhost:7155/api/employees');
   }
 
-  saveEmployee(employee: CreateEmp): Observable<any> {
+  saveEmployee(employee: Employee): Observable<any> {
     return this.httpClient.post<any>(
       'https://localhost:7155/api/employees',
       employee
     );
   }
 
-  updateEmployee(id: number, employee: UpdateEmp): Observable<any> {
+  updateEmployee(id: number, employee: Employee): Observable<any> {
     return this.httpClient.put<any>(
       'https://localhost:7155/api/employees/' + id,
       employee

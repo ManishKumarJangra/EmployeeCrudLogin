@@ -29,7 +29,7 @@
                 <td>{{employee.gender}}</td>
                 <td>{{employee.roleName}}</td>
                 <td>
-                    <button (click)="editClick(employee)" class="btn btn-primary" data-target="#editEmployee"
+                    <button class="btn btn-primary" (click)="editClick(employee)" data-target="#editEmployee"
                         data-toggle="modal">
                         <i class="fa fa-edit"></i>
                     </button>
@@ -44,117 +44,162 @@
 <!-- New Employee Modal -->
 <div class="modal" tabindex="-1" role="dialog" id="newEmployee">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <form [formGroup]="newEmpForm" (ngSubmit)="saveClick()" class="modal-content">
             <div class="modal-header bg-info">
                 <h5 class="modal-title text-white">Add New Employee</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
+                <!-- Name -->
                 <div class="form-group row">
                     <label class="col-4" for="txtname">Name</label>
                     <div class="col-8">
-                        <input id="txtname" [(ngModel)]="newEmployee.name" type="text" name="name" class="form-control"
-                            placeholder="Enter Name" />
+                        <input id="txtname" formControlName="name" class="form-control" placeholder="Enter Name" />
+                        <small class="text-danger"
+                            *ngIf="newEmpForm.get('name')?.invalid && newEmpForm.get('name')?.touched">
+                            Name is required.
+                        </small>
                     </div>
                 </div>
+                <!-- Address -->
                 <div class="form-group row">
-                    <label class="col-4" for="txtname">Address</label>
+                    <label class="col-4" for="txtaddress">Address</label>
                     <div class="col-8">
-                        <input id="txtaddress" [(ngModel)]="newEmployee.address" type="text" name="address"
-                            class="form-control" placeholder="Enter Address" />
+                        <input id="txtaddress" formControlName="address" class="form-control" placeholder="Enter Address" />
+                        <small class="text-danger"
+                            *ngIf="newEmpForm.get('address')?.invalid && newEmpForm.get('address')?.touched">
+                            Address is required.
+                        </small>
                     </div>
                 </div>
+                <!-- Phone Number -->
                 <div class="form-group row">
-                    <label class="col-4" for="txtname">Phone Number</label>
+                    <label class="col-4" for="txtnumber">Phone Number</label>
                     <div class="col-8">
-                        <input id="txtnumber" [(ngModel)]="newEmployee.phoneNumber" type="text" name="number"
-                            class="form-control" placeholder="Enter Phone Number"/>
+                        <input id="txtnumber" formControlName="phoneNumber" class="form-control" placeholder="Enter Phone Number" />
+                        <small class="text-danger" *ngIf="newEmpForm.get('phoneNumber')?.invalid && newEmpForm.get('phoneNumber')?.touched">
+                            Valid 10-digit number is required.
+                        </small>
                     </div>
                 </div>
+                <!-- Gender -->
                 <div class="form-group row">
                     <label class="col-4">Gender</label>
                     <div class="col-8">
                         <div *ngFor="let gender of genders">
-                            <input [(ngModel)]="newEmployee.gender" type="radio" [value]="gender.id" name="gender1"/>
+                            <input type="radio" [value]="gender.id" formControlName="gender" name="gender1" />
                             {{ gender.name }}
                         </div>
+                        <small class="text-danger" *ngIf="newEmpForm.get('gender')?.invalid && newEmpForm.get('gender')?.touched">
+                            Gender is required.
+                        </small>
                     </div>
                 </div>
+                <!-- Role -->
                 <div class="form-group row">
                     <label class="col-4">Role</label>
                     <div class="col-8">
-                        <select id="roleId" name="roleId" [(ngModel)]="newEmployee.roleId">
+                        <select class="form-control" formControlName="roleId">
+                            <option value="">--Select Role--</option>
                             <option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</option>
                         </select>
+                        <small class="text-danger" *ngIf="newEmpForm.get('roleId')?.invalid && newEmpForm.get('roleId')?.touched">
+                            Role is required.
+                        </small>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button (click)="saveClick()" type="button" class="btn btn-info" data-dismiss="modal">
-                    Save changes</button>
+                <!-- Save Button -->
+                <button type="submit" class="btn btn-info" [disabled]="newEmpForm.invalid">
+                    Save changes
+                </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
 <!-- Edit Employee Modal -->
 <div class="modal" tabindex="-1" role="dialog" id="editEmployee">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <form [formGroup]="editEmpForm" (ngSubmit)="updateClick()" class="modal-content">
             <div class="modal-header bg-info">
-                <h5 class="modal-title text-white">Edit Employee</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title text-white">Update Employee Details</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
+                <!-- Name -->
                 <div class="form-group row">
                     <label class="col-4" for="txtname">Name</label>
                     <div class="col-8">
-                        <input id="txtname" [(ngModel)]="editEmployee.name" type="text" name="name" class="form-control"
-                            placeholder="Enter Name" />
+                        <input id="txtname" formControlName="name" class="form-control" placeholder="Enter Name" />
+                        <small class="text-danger"
+                            *ngIf="editEmpForm.get('name')?.invalid && editEmpForm.get('name')?.touched">
+                            Name is required.
+                        </small>
+                    </div>
+                </div>
+                <!-- Address -->
+                <div class="form-group row">
+                    <label class="col-4" for="txtaddress">Address</label>
+                    <div class="col-8">
+                        <input id="txtaddress" formControlName="address" class="form-control"
+                            placeholder="Enter Address" />
+                        <small class="text-danger"
+                            *ngIf="editEmpForm.get('address')?.invalid && editEmpForm.get('address')?.touched">
+                            Address is required.
+                        </small>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-4" for="txtname">Address</label>
+                    <label class="col-4" for="txtnumber">Phone Number</label>
                     <div class="col-8">
-                        <input id="txtaddress" [(ngModel)]="editEmployee.address" type="text" name="address"
-                            class="form-control" placeholder="Enter Address" />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-4" for="txtname">Phone Number</label>
-                    <div class="col-8">
-                        <input id="txtnumber" [(ngModel)]="editEmployee.phoneNumber" type="text" name="number"
-                            class="form-control" placeholder="Enter Phone Number" />
+                        <input id="txtnumber" formControlName="phoneNumber" class="form-control"
+                            placeholder="Enter Phone Number" />
+                        <small class="text-danger"
+                            *ngIf="editEmpForm.get('phoneNumber')?.invalid && editEmpForm.get('phoneNumber')?.touched">
+                            Valid 10-digit number is required.
+                        </small>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-4">Gender</label>
                     <div class="col-8">
                         <div *ngFor="let gender of genders">
-                            <input [(ngModel)]="editEmployee.gender" type="radio" [value]="gender.id" name="gender2" />
+                            <input type="radio" [value]="gender.id" formControlName="gender" name="gender1" />
                             {{ gender.name }}
                         </div>
+                        <small class="text-danger"
+                            *ngIf="editEmpForm.get('gender')?.invalid && editEmpForm.get('gender')?.touched">
+                            Gender is required.
+                        </small>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-4">Role</label>
                     <div class="col-8">
-                        <select id="roleId" name="roleId" [(ngModel)]="editEmployee.roleId">
+                        <select class="form-control" formControlName="roleId">
+                            <option value="">--Select Role--</option>
                             <option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</option>
                         </select>
+                        <small class="text-danger"
+                            *ngIf="editEmpForm.get('roleId')?.invalid && editEmpForm.get('roleId')?.touched">
+                            Role is required.
+                        </small>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button (click)="updateClick()" type="button" class="btn btn-info" data-dismiss="modal">Save
-                    changes</button>
+                <button type="submit" class="btn btn-info" [disabled]="editEmpForm.invalid">
+                    Save changes
+                </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
-        </div>
+        </form>
     </div>
 </div>

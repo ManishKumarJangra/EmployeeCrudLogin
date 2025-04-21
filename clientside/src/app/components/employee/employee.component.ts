@@ -1,14 +1,11 @@
 import { EmployeeService } from '../../services/employee/employee.service';
-import {Component, OnInit } from '@angular/core';
-import {
-  CreateEmp,
-  Employee,
-  UpdateEmp,
-} from './../../models/employee/employee';
+import { Component, OnInit } from '@angular/core';
+import { Employee } from './../../models/employee/employee';
 import 'datatables.net';
 import 'datatables.net-bs4';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 declare var $: any;
 
 @Component({
@@ -18,16 +15,46 @@ declare var $: any;
 })
 export class EmployeeComponent implements OnInit {
   employeesList: Employee[] = [];
-  newEmployee: CreateEmp = new CreateEmp();
-  editEmployee: UpdateEmp = new UpdateEmp();
   roles: { id: number; name: string }[] = [];
   genders: { id: number; name: string }[] = [];
   dataTable: any;
 
+  newEmpForm!: FormGroup;
+  editEmpForm!: FormGroup;
+
   constructor(
     private employeeService: EmployeeService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private formBuilder: FormBuilder
   ) {}
+
+  ngOnInit(): void {
+    this.getAllEmployees();
+    this.employeeService.getRoles().subscribe((data) => {
+      this.roles = data;
+    });
+
+    this.employeeService.getGenders().subscribe((data) => {
+      this.genders = data;
+    });
+    // Validators for new Employee form
+    this.newEmpForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      address: ['', Validators.required],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      gender: ['', Validators.required],
+      roleId: [0, Validators.required],
+    });
+    // Validators for editEmployee form
+    this.editEmpForm = this.formBuilder.group({
+      id: [0],
+      name: ['', Validators.required],
+      address: ['', Validators.required],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      gender: ['', Validators.required],
+      roleId: [0, Validators.required],
+    });
+  }
 
   getAllEmployees() {
     this.employeeService.getAllEmployees().subscribe(
@@ -53,42 +80,35 @@ export class EmployeeComponent implements OnInit {
     );
   }
 
-  ngOnInit() : void {
-    this.getAllEmployees();
-    this.employeeService.getRoles().subscribe((data) => {
-      this.roles = data;
-    });
-
-    this.employeeService.getGenders().subscribe((data) => {
-      this.genders = data;
-    });
-  }
-
   saveClick() {
+    if (this.newEmpForm.invalid) return; //If form is invalid, Stops further execution
     // console.log(this.newEmployee);
-    this.employeeService.saveEmployee(this.newEmployee).subscribe(
-      (response) => {
+    this.employeeService.saveEmployee(this.newEmpForm.value).subscribe(
+      () => {
         Swal.fire('Success!', 'Employee added successfully!', 'success');
         this.toastr.success('Employee added successfully!', 'Success', {
           progressBar: true,
         });
         this.getAllEmployees();
-        this.clearRec();
+        this.newEmpForm.reset();
+        $('#newEmployee').modal('hide');
       },
-      (error) => {
+      () => {
         console.log('unable to read API');
         this.toastr.error('Something went wrong!', 'Error');
       }
     );
   }
 
-  editClick(emp: any) {
-    this.editEmployee = emp;
+  editClick(emp: Employee) {
+    this.editEmpForm.patchValue(emp);
   }
 
   updateClick() {
+    if (this.editEmpForm.invalid) return; //If form is invalid, Stops further execution
+
     this.employeeService
-      .updateEmployee(this.editEmployee.id, this.editEmployee)
+      .updateEmployee(this.editEmpForm.value.id, this.editEmpForm.value)
       .subscribe(
         (response) => {
           Swal.fire('Success!', 'Employee data has been updated', 'success');
@@ -96,21 +116,14 @@ export class EmployeeComponent implements OnInit {
             progressBar: true,
           });
           this.getAllEmployees();
-          this.clearRec();
+          this.editEmpForm.reset();
+          $('#editEmployee').modal('hide');
         },
         (error) => {
           console.log('unable to access API');
           this.toastr.error('Something went wrong!', 'Error');
         }
       );
-  }
-
-  private clearRec() {
-    this.newEmployee.name = '';
-    this.newEmployee.address = '';
-    this.newEmployee.phoneNumber = '';
-    this.newEmployee.gender = '';
-    this.newEmployee.roleId = 0;
   }
 
   deleteClick(id: number) {
