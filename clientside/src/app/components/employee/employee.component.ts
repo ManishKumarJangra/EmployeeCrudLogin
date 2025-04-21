@@ -17,6 +17,7 @@ export class EmployeeComponent implements OnInit {
   employeesList: Employee[] = [];
   roles: { id: number; name: string }[] = [];
   genders: { id: number; name: string }[] = [];
+  departments: {id: number; name: string }[] = [];
   dataTable: any;
 
   newEmpForm!: FormGroup;
@@ -37,6 +38,11 @@ export class EmployeeComponent implements OnInit {
     this.employeeService.getGenders().subscribe((data) => {
       this.genders = data;
     });
+
+    this.employeeService.getDepartments().subscribe((data) => {
+      this.departments = data;
+    });
+
     // Validators for new Employee form
     this.newEmpForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -44,6 +50,7 @@ export class EmployeeComponent implements OnInit {
       phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       gender: ['', Validators.required],
       roleId: [0, Validators.required],
+      departmentId: [0, Validators.required],
     });
     // Validators for editEmployee form
     this.editEmpForm = this.formBuilder.group({
@@ -53,6 +60,7 @@ export class EmployeeComponent implements OnInit {
       phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       gender: ['', Validators.required],
       roleId: [0, Validators.required],
+      departmentId: [0, Validators.required],
     });
   }
 

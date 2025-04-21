@@ -25,6 +25,9 @@ namespace EmpCrudAPI.Models
 
         [ForeignKey("RoleId")]
         public Role? Role { get; set; }
+        public int DepartmentId { get; set; }
+        [ForeignKey("DepartmentId")]
+        public Department? Department { get; set; }
 
         [NotMapped]
         public string GenderDisplay => Gender.ToString();

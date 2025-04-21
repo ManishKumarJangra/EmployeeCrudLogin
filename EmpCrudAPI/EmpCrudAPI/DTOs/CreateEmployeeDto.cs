@@ -20,5 +20,7 @@ namespace EmpCrudAPI.DTOs
 
         [Required]
         public int RoleId { get; set; }
+        [Required]
+        public int DepartmentId { get; set; }
     }
 }

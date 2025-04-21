@@ -18,6 +18,7 @@
                 <th>Phone Number</th>
                 <th>Gender</th>
                 <th>Role</th>
+                <th>Department</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -28,6 +29,7 @@
                 <td>{{employee.phoneNumber}}</td>
                 <td>{{employee.gender}}</td>
                 <td>{{employee.roleName}}</td>
+                <td>{{employee.departmentName}}</td>
                 <td>
                     <button class="btn btn-primary" (click)="editClick(employee)" data-target="#editEmployee"
                         data-toggle="modal">
@@ -89,7 +91,7 @@
                     <label class="col-4">Gender</label>
                     <div class="col-8">
                         <div *ngFor="let gender of genders">
-                            <input type="radio" [value]="gender.id" formControlName="gender" name="gender1" />
+                            <input type="radio" [value]="gender.id" formControlName="gender" name="gender" />
                             {{ gender.name }}
                         </div>
                         <small class="text-danger" *ngIf="newEmpForm.get('gender')?.invalid && newEmpForm.get('gender')?.touched">
@@ -107,6 +109,19 @@
                         </select>
                         <small class="text-danger" *ngIf="newEmpForm.get('roleId')?.invalid && newEmpForm.get('roleId')?.touched">
                             Role is required.
+                        </small>
+                    </div>
+                </div>
+                <!-- Department -->
+                <div class="form-group row">
+                    <label class="col-4">Department</label>
+                    <div class="col-8">
+                        <select class="form-control" formControlName="departmentId">
+                            <option value="">--Select Department--</option>
+                            <option *ngFor="let dept of departments" [value]="dept.id">{{ dept.name }}</option>
+                        </select>
+                        <small class="text-danger" *ngIf="newEmpForm.get('departmentId')?.invalid && newEmpForm.get('departmentId')?.touched">
+                            Department is required.
                         </small>
                     </div>
                 </div>
@@ -156,6 +171,7 @@
                         </small>
                     </div>
                 </div>
+                <!-- Phone Number -->
                 <div class="form-group row">
                     <label class="col-4" for="txtnumber">Phone Number</label>
                     <div class="col-8">
@@ -167,11 +183,12 @@
                         </small>
                     </div>
                 </div>
+                <!-- Gender -->
                 <div class="form-group row">
                     <label class="col-4">Gender</label>
                     <div class="col-8">
                         <div *ngFor="let gender of genders">
-                            <input type="radio" [value]="gender.id" formControlName="gender" name="gender1" />
+                            <input type="radio" [value]="gender.id" formControlName="gender" name="gender" />
                             {{ gender.name }}
                         </div>
                         <small class="text-danger"
@@ -180,6 +197,7 @@
                         </small>
                     </div>
                 </div>
+                <!-- Role -->
                 <div class="form-group row">
                     <label class="col-4">Role</label>
                     <div class="col-8">
@@ -190,6 +208,20 @@
                         <small class="text-danger"
                             *ngIf="editEmpForm.get('roleId')?.invalid && editEmpForm.get('roleId')?.touched">
                             Role is required.
+                        </small>
+                    </div>
+                </div>
+                <!-- Department -->
+                <div class="form-group row">
+                    <label class="col-4">Department</label>
+                    <div class="col-8">
+                        <select class="form-control" formControlName="departmentId">
+                            <option value="">--Select Department--</option>
+                            <option *ngFor="let dept of departments" [value]="dept.id">{{ dept.name }}</option>
+                        </select>
+                        <small class="text-danger"
+                            *ngIf="newEmpForm.get('departmentId')?.invalid && newEmpForm.get('departmentId')?.touched">
+                            Department is required.
                         </small>
                     </div>
                 </div>

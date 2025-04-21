@@ -21,7 +21,7 @@ namespace EmpCrudAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetEmployees()
         {
-            var employees = await _context.Employees.Include(r => r.Role).ToListAsync();
+            var employees = await _context.Employees.Include(r => r.Role).Include(d => d.Department).ToListAsync();
 
             //Modifying the Output
             var result = employees.Select(r => new EmployeeDto
@@ -32,7 +32,9 @@ namespace EmpCrudAPI.Controllers
                 PhoneNumber = r.PhoneNumber,
                 Gender = r.Gender.ToString(),
                 RoleId = r.RoleId,
-                RoleName = r.Role?.Name
+                RoleName = r.Role?.Name,
+                DepartmentId = r.DepartmentId,
+                DepartmentName = r.Department.Name
             });
 
             return Ok(result);
@@ -43,7 +45,7 @@ namespace EmpCrudAPI.Controllers
         {
             if (id < 1) return BadRequest();
 
-            var employee = await _context.Employees.Include(r => r.Role).FirstOrDefaultAsync(e => e.Id == id);
+            var employee = await _context.Employees.Include(r => r.Role).Include(d => d.Department).FirstOrDefaultAsync(e => e.Id == id);
 
             if (employee == null) return NotFound();
 
@@ -56,7 +58,9 @@ namespace EmpCrudAPI.Controllers
                 PhoneNumber = employee.PhoneNumber,
                 Gender = employee.Gender.ToString(),
                 RoleId = employee.RoleId,
-                RoleName = employee.Role?.Name
+                RoleName = employee.Role?.Name,
+                DepartmentId = employee.DepartmentId,
+                DepartmentName = employee.Department.Name
             };
             return Ok(result);
         }
@@ -69,13 +73,17 @@ namespace EmpCrudAPI.Controllers
             var roleExists = await _context.Roles.AnyAsync(r => r.Id == empDto.RoleId);
             if (!roleExists) return BadRequest(new {message = "Invalid Role ID"});
 
+            var departmentExists = await _context.Departments.AnyAsync(d => d.Id == empDto.DepartmentId);
+            if (!departmentExists) return BadRequest(new { message = "Invalid Department ID" });
+
             var employee = new Employee
             {
                 Name = empDto.Name,
                 Address = empDto.Address,
                 PhoneNumber = empDto.PhoneNumber,
                 Gender = empDto.Gender,
-                RoleId = empDto.RoleId
+                RoleId = empDto.RoleId,
+                DepartmentId = empDto.DepartmentId
             };
 
             _context.Employees.Add(employee);
@@ -94,6 +102,9 @@ namespace EmpCrudAPI.Controllers
             var roleExists = await _context.Roles.AnyAsync(r => r.Id == empDto.RoleId);
             if (!roleExists) return BadRequest(new { message = "Invalid Role ID" });
 
+            var departmentExists = await _context.Departments.AnyAsync(d => d.Id == empDto.DepartmentId);
+            if (!departmentExists) return BadRequest(new { message = "Invalid Department ID" });
+
             //Finding Employee Data in table with id entered
             var employeeInDb = await _context.Employees.FindAsync(id);
             if (employeeInDb == null) return NotFound(new { message = $"Employee with Id = {id} not found" });
@@ -103,6 +114,7 @@ namespace EmpCrudAPI.Controllers
             employeeInDb.PhoneNumber = empDto.PhoneNumber;
             employeeInDb.Gender = empDto.Gender;
             employeeInDb.RoleId = empDto.RoleId;
+            employeeInDb.DepartmentId = empDto.DepartmentId;
 
             try
             {

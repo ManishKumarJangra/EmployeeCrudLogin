@@ -32,12 +32,16 @@ export class EmployeeService {
       'https://localhost:7155/api/employees/' + id
     );
   }
-
+  
   getRoles(): Observable<any> {
     return this.httpClient.get<any>('https://localhost:7155/api/roles');
   }
 
   getGenders(): Observable<any> {
     return this.httpClient.get<any>('https://localhost:7155/api/genders');
+  }
+
+  getDepartments(): Observable<any> {
+    return this.httpClient.get<any>('https://localhost:7155/api/department');
   }
 }

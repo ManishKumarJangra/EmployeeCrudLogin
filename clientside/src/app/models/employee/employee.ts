@@ -5,7 +5,9 @@ export class Employee {
   phoneNumber: string;
   gender: any;
   roleId: number;
-  roleName: any;
+  roleName: string;
+  departmentId: number;
+  departmentName: string;
   constructor() {
     this.id = 0;
     this.name = '';
@@ -14,5 +16,7 @@ export class Employee {
     this.gender = '';
     this.roleId = 0;
     this.roleName = '';
+    this.departmentId = 0;
+    this.departmentName = '';
   }
 }
