@@ -1,0 +1,46 @@
+# .gitignore for EmployeeCrudLogin.API (.NET 6 Web API project)
+
+# Build Folders
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Publish outputs
+**/publish/
+**/out/
+
+# .NET related
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Rider
+.idea/
+
+# ASP.NET Core secrets
+secrets.json
+
+# Dotnet watch
+**/.dotnet-watch.json
+
+# Coverage reports
+coverage/
+
+# Environment files
+.env
+*.env.*
