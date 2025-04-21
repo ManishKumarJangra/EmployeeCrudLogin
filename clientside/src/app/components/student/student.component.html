@@ -1,60 +1,75 @@
 <div class="container mt-4">
     <h3 class="mb-2">Student List</h3>
 
-    <div class="form-group row">
-        <!-- Page Size Dropdown -->
-        <div class="col-8">
-            <label for="pageSize">Page Size: &nbsp;</label>
-            <select id="pageSize" [(ngModel)]="pageSize" (change)="onPageSizeChange()" class="form-select">
-                <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
-            </select>
-            <label class="offset-1">Total Records: {{ totalRecords }}</label>
+    <div class="container border p-2">
+        <div class="form-group row">
+            <!-- Page Size Dropdown -->
+            <div class="col-8">
+                <label for="pageSize">Page Size: &nbsp;</label>
+                <select id="pageSize" [(ngModel)]="pageSize" (change)="onPageSizeChange()" class="form-select">
+                    <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+                </select>
+                <label class="offset-1">Total Records: {{ totalRecords }}</label>
+            </div>
+
+            <!-- Search Box -->
+            <div class="col-4">
+                <input type="text" [(ngModel)]="search" (input)="onSearchChange()"
+                    placeholder="Search by Name, Class, or Address" class="form-control" />
+            </div>
         </div>
 
-        <!-- Search Box -->
-        <div class="col-4">
-            <input type="text" [(ngModel)]="search" (input)="onSearchChange()"
-                placeholder="Search by Name, Class, or Address" class="form-control" />
+        <!-- Student Table -->
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <!-- Sorting by Column Name (Click the same col twice for sortOrder) -->
+                <tr>
+                    <th (click)="onSort('Name')">
+                        Name
+                        <span *ngIf="sortBy === 'Name'">({{ sortOrder }})</span>
+                    </th>
+                    <th (click)="onSort('Age')">
+                        Age
+                        <span *ngIf="sortBy === 'Age'">({{sortOrder}})</span>
+                    </th>
+                    <th (click)="onSort('Class')">
+                        Class
+                        <span *ngIf="sortBy === 'Class'">({{sortOrder}})</span>
+                    </th>
+                    <th (click)="onSort('Address')">
+                        Address
+                        <span *ngIf="sortBy === 'Address'">({{sortOrder}})</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let student of students">
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.age }}</td>
+                    <td>{{ student.class }}</td>
+                    <td>{{ student.address }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <!-- Pagination Buttons -->
+        <div class="row">
+            <div class="col-4 offset-8">
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" [class.disabled]="pageNumber === 1">
+                            <button class="page-link" (click)="onPageChange(pageNumber - 1)">Previous</button>
+                        </li>
+                        <li *ngFor="let page of totalPages" class="page-item" [class.active]="page === pageNumber">
+                            <button class="page-link" (click)="onPageChange(page)">{{ page }}</button>
+                        </li>
+                        <li class="page-item" [class.disabled]="pageNumber === totalPages.length">
+                            <button class="page-link" (click)="onPageChange(pageNumber + 1)">Next</button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
-
-    <!-- Student Table -->
-    <table class="table table-bordered table-striped table-hover">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Class</th>
-                <th>Address</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let student of students">
-                <td>{{ student.name }}</td>
-                <td>{{ student.age }}</td>
-                <td>{{ student.class }}</td>
-                <td>{{ student.address }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-
-    <!-- Pagination Buttons -->
-     <div class="row">
-        <div class="col-4 offset-8">
-            <nav>
-                <ul class="pagination justify-content-center">
-                    <li class="page-item" [class.disabled]="pageNumber === 1">
-                        <button class="page-link" (click)="onPageChange(pageNumber - 1)">Previous</button>
-                    </li>
-                    <li *ngFor="let page of totalPages" class="page-item" [class.active]="page === pageNumber">
-                        <button class="page-link" (click)="onPageChange(page)">{{ page }}</button>
-                    </li>
-                    <li class="page-item" [class.disabled]="pageNumber === totalPages.length">
-                        <button class="page-link" (click)="onPageChange(pageNumber + 1)">Next</button>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-     </div>
 </div>

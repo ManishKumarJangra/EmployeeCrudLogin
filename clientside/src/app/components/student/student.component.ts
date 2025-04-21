@@ -13,6 +13,8 @@ export class StudentComponent implements OnInit {
   pageNumber = 1;
   pageSize = 5;
   pageSizes = [5, 10, 15, 20];
+  sortBy = '';
+  sortOrder = 'asc';
 
   constructor(private studentService: StudentService) {}
 
@@ -25,6 +27,8 @@ export class StudentComponent implements OnInit {
       search: this.search,
       pageNumber: this.pageNumber,
       pageSize: this.pageSize,
+      sortBy: this.sortBy,
+      sortOrder: this.sortOrder,
     };
 
     this.studentService.getStudents(params).subscribe((response) => {
@@ -45,6 +49,17 @@ export class StudentComponent implements OnInit {
 
   onPageSizeChange() {
     this.pageNumber = 1;
+    this.getStudents();
+  }
+
+  onSort(column: string) {
+    if(this.sortBy === column) {
+      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    }
+    else {
+      this.sortBy = column;
+      this.sortOrder = 'asc';
+    }
     this.getStudents();
   }
 
